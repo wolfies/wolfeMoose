@@ -8,18 +8,27 @@ Implementering af klasser
 
 [<AbstractClass>]
 type Animal =
-   abstract member birthrate : int
-   default this.birthrate = 1
+    abstract member birthrate : int
+    abstract member choice() : unit
+    abstract member die() : unit
+    member move() =
 
+[<Sealed>]
 type Prey = 
-   inherit Animal
-   override this.birthrate = base.birthrate * 4
+    inherit Animal
+    override this.birthrate = 4
+    override die() =
 
-
+[<Sealed>]
 type Predator = 
-   override this.birthrate = base.birthrate * 3
+	inherit Animal
+	override this.birthrate = 3
+	override die() =
+	member starveTime = 10
+	member eat(prey) = 
 
-
-type Habitat(a : Prey list, b : Predator list) = 
-   let mutable time = 0 
-   member x.tick = time <- time + 1
+[<Sealed>]
+type Habitat(size, numberOfPrey, numberOfPredator) = 
+	let mutable time = 0 //starter tid
+	let mutable habitat = Array2D.create size size 0 //laver en tom todimensionel-liste
+	member x.tick = time <- time + 1 //tick funktion
