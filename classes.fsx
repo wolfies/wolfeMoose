@@ -2,17 +2,24 @@
 
 Implementering af klasser
 
-3 klasser 
+4 klasser 
 
 *)
 
-type prey = 
-   let birthrate = 4
+[<AbstractClass>]
+type Animal =
+   abstract member birthrate : int
+   default this.birthrate = 1
+
+type Prey = 
+   inherit Animal
+   override this.birthrate = base.birthrate * 4
 
 
-type predator = 
-   let birthrate = 3
+type Predator = 
+   override this.birthrate = base.birthrate * 3
 
-type environment(a : prey list, b : predator lyst) = 
+
+type Habitat(a : Prey list, b : Predator list) = 
    let mutable time = 0 
    member x.tick = time <- time + 1
