@@ -23,6 +23,8 @@ type Predator =
 
 *)
 
+//diller
+
 [<Sealed>]
 type Habitat(size, numberOfPrey, numberOfPredator) = 
     let mutable time = 0 //starter tid
