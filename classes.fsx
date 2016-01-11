@@ -28,24 +28,33 @@ type Predator =
 [<Sealed>]
 type Habitat(size, numberOfPrey, numberOfPredator) = 
     let mutable time = 0 //starter tid
-    member x.habitat = Array2D.create size size 0 //laver en tom todimensionel-liste uden dyr
-    member x.gen = System.Random()
-    member x.table = Hashtable()
-    member x.placeAnimal(i) =
-        let mutable x = x.gen.Next(size)
-        let mutable y = x.gen.Next(size)
-        while x.habitat.[x,y] <> 0 do
+    let habitat = Array2D.create size size 0 //laver en tom todimensionel-liste uden dyr
+    let gen = System.Random()
+    let table = Hashtable()
+    let placeAnimal(i) =
+        let mutable x = gen.Next(size)
+        let mutable y = gen.Next(size)
+        while habitat.[x,y] <> 0 do
             x <- x + 1
-            if x > size then x <- 0 ; y <- y + 1
+            if x > size then
+                x <- 0
+                y <- y + 1
                 if y > size then
                     y <- 0
-        Array2D.set x.habitat x y i
-    for i = 1 to numberOfPredator] do
-        x.table.Add(i, 1)
-        x.placeAnimal(i)
-    for i = -1 downto -numberOfPrey do
-        x.table.Add(i, 2)
-        x.placeAnimal(i)
+        Array2D.set habitat x y i
+    do 
+        for i = 1 to numberOfPredator do
+            table.Add(i, 1)
+            placeAnimal(i)
+        for i = -1 downto -numberOfPrey do
+            table.Add(i, 2)
+            placeAnimal(i)
     member x.tick =
         //stremline to save DOC
-        x.time <- x.time + 1 //tick funktion
+        time <- time + 1 //tick funktion
+    member x.printAnimal() = printfn "%A, %A" table.Values table.Keys
+    member x.printHabitat() = printfn "%A" habitat
+
+let hab = Habitat(10,2,2)
+hab.printAnimal()
+hab.printHabitat()
