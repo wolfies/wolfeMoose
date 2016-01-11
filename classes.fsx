@@ -1,11 +1,5 @@
+open System.Collections
 (*
-
-Implementering af klasser
-
-4 klasser 
-
-*)
-
 [<AbstractClass>]
 type Animal =
     abstract member birthrate : int
@@ -21,14 +15,35 @@ type Prey =
 
 [<Sealed>]
 type Predator = 
-	inherit Animal
-	override this.birthrate = 3
-	override die() =
-	member starveTime = 10
-	member eat(prey) = 
+    inherit Animal
+    override this.birthrate = 3
+    override die() =
+    member starveTime = 10
+    member eat(prey) = 
+
+*)
 
 [<Sealed>]
 type Habitat(size, numberOfPrey, numberOfPredator) = 
-	let mutable time = 0 //starter tid
-	let mutable habitat = Array2D.create size size 0 //laver en tom todimensionel-liste
-	member x.tick = time <- time + 1 //tick funktion
+    let mutable time = 0 //starter tid
+    let habitat = Array2D.create size size 0 //laver en tom todimensionel-liste uden dyr
+    let gen = System.Random()
+    let table = Hashtable()
+    let placeAnimal(i) =
+        let mutable x = gen.Next(size)
+        let mutable y = gen.Next(size)
+        if habitat.[x].[y] <> 0 then
+            if x > size then x <- 0 ; y <- y + 1
+                if y > size then
+                    y <- 0
+        else Array2D.set habitat x y i
+        (x,y)
+    for i in [1 .. numberOfPredator] do
+        table.Add(i, 1)
+        placeAnimal(i)
+    for i in [-numberOfPrey .. -1] do
+        table.Add(i, 2)
+        placeAnimal(i)
+    member x.tick =
+        //stremline to save DOC
+        time <- time + 1 //tick funktion
