@@ -1,0 +1,46 @@
+open System.Collections
+
+let rnd = System.Random()
+
+let size = 30
+
+let predhab = Array2D.create 30 30 2
+
+let preyhab = Array2D.create 30 30 -2
+
+let empthab = Array2D.create 30 30 0
+
+let randhab = Array2D.create 30 30 0
+
+
+let visual (habitat : int [,]) =
+    let fence(p) =
+        printf "+"
+        for i = 0 to size * 2 do printf p
+        printfn "+"
+    fence("‾")
+    for i = 0 to size - 1 do
+     printf "┊ "
+     for j = 0 to size - 1 do
+        if habitat.[j,i] = 0 then printf "  " 
+        elif habitat.[j,i] > 0 then printf "♂ "
+        else printf "♀ "
+     printfn "┊"
+    fence("_")
+
+printfn "%s" "PREDETORS"
+printfn "%A" (visual(preyhab))
+printfn "%s" "PREYS"
+printfn "%A" (visual(predhab))
+printfn "%s" "Void"     
+printfn "%A" (visual(empthab))
+    
+(*
+  +__________+
+  |- - - - - |
+  |- - S T - |
+  |- - - - - |
+  |- - - - - | 
+  |- - - - - |
+  +‾‾‾‾‾‾‾‾‾‾+
+*)
